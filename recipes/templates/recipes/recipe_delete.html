@@ -1,0 +1,89 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}レシピ削除 - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-trash me-2"></i>レシピの削除確認
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>注意:</strong> この操作は取り消せません。
+                    </div>
+                    
+                    <p class="mb-4">以下のレシピを本当に削除しますか？</p>
+                    
+                    <div class="border rounded p-3 mb-4 bg-light">
+                        <h5 class="mb-2">{{ recipe.title }}</h5>
+                        {% if recipe.is_ai_generated %}
+                        <span class="badge ai-badge text-white mb-2">
+                            <i class="fas fa-robot me-1"></i>AI 生成レシピ
+                        </span>
+                        {% endif %}
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <small class="text-muted">
+                                    <i class="fas fa-clock d-block mb-1"></i>
+                                    {% if recipe.cooking_time %}{{ recipe.cooking_time }}分{% else %}未設定{% endif %}
+                                </small>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">
+                                    <i class="fas fa-users d-block mb-1"></i>
+                                    {% if recipe.servings %}{{ recipe.servings }}人分{% else %}未設定{% endif %}
+                                </small>
+                            </div>
+                            <div class="col-4">
+                                <small class="text-muted">
+                                    <i class="fas fa-signal d-block mb-1"></i>
+                                    {{ recipe.get_difficulty_display }}
+                                </small>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="small text-muted mb-0">
+                            <strong>材料:</strong> {{ recipe.ingredients|truncatechars:100 }}
+                        </p>
+                    </div>
+                    
+                    <form method="post" class="d-grid gap-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="fas fa-trash me-2"></i>削除する
+                        </button>
+                        <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>キャンセル
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function(e) {
+        if (!confirm('本当にこのレシピを削除しますか？この操作は取り消せません。')) {
+            e.preventDefault();
+            return false;
+        }
+        
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>削除中...';
+    });
+});
+</script>
+{% endblock %}

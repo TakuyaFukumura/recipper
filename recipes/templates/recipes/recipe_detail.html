@@ -1,0 +1,191 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}{{ recipe.title }} - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Recipe Header -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="flex-grow-1">
+                            <h1 class="h2 mb-2">{{ recipe.title }}</h1>
+                            {% if recipe.is_ai_generated %}
+                            <span class="badge ai-badge text-white fs-6">
+                                <i class="fas fa-robot me-1"></i>AI 生成レシピ
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'recipe_edit' recipe.pk %}">
+                                        <i class="fas fa-edit me-2"></i>編集
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{% url 'recipe_delete' recipe.pk %}">
+                                        <i class="fas fa-trash me-2"></i>削除
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Recipe Info -->
+                    <div class="row text-center mb-4">
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="border rounded p-3">
+                                <i class="fas fa-clock fa-2x text-primary mb-2 d-block"></i>
+                                <strong>調理時間</strong><br>
+                                <span class="text-muted">
+                                    {% if recipe.cooking_time %}{{ recipe.cooking_time }}分{% else %}未設定{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="border rounded p-3">
+                                <i class="fas fa-users fa-2x text-success mb-2 d-block"></i>
+                                <strong>分量</strong><br>
+                                <span class="text-muted">
+                                    {% if recipe.servings %}{{ recipe.servings }}人分{% else %}未設定{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="border rounded p-3">
+                                <i class="fas fa-signal fa-2x text-warning mb-2 d-block"></i>
+                                <strong>難易度</strong><br>
+                                <span class="text-muted">{{ recipe.get_difficulty_display }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="border rounded p-3">
+                                <i class="fas fa-calendar fa-2x text-info mb-2 d-block"></i>
+                                <strong>作成日</strong><br>
+                                <span class="text-muted">{{ recipe.created_at|date:"n/j" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-carrot me-2"></i>材料
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="ingredients-content">
+                        {{ recipe.ingredients|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-list-ol me-2"></i>作り方
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="instructions-content">
+                        {{ recipe.instructions|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <a href="{% url 'recipe_edit' recipe.pk %}" class="btn btn-primary me-2 mb-2">
+                                <i class="fas fa-edit me-1"></i>このレシピを編集
+                            </a>
+                            <a href="{% url 'recipe_list' %}" class="btn btn-outline-secondary me-2 mb-2">
+                                <i class="fas fa-list me-1"></i>レシピ一覧に戻る
+                            </a>
+                            <a href="{% url 'ai_recipe_generate' %}" class="btn btn-success mb-2">
+                                <i class="fas fa-robot me-1"></i>新しいレシピを生成
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe Meta Info -->
+            <div class="card">
+                <div class="card-body bg-light">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-plus me-1"></i>
+                                作成日時: {{ recipe.created_at|date:"Y年n月j日 H:i" }}
+                            </small>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-edit me-1"></i>
+                                最終更新: {{ recipe.updated_at|date:"Y年n月j日 H:i" }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.ingredients-content ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.ingredients-content li:before {
+    content: "🥕 ";
+    margin-right: 8px;
+}
+
+.instructions-content ol {
+    counter-reset: step-counter;
+    padding-left: 0;
+    list-style: none;
+}
+
+.instructions-content ol li {
+    counter-increment: step-counter;
+    margin-bottom: 1rem;
+    padding-left: 3rem;
+    position: relative;
+}
+
+.instructions-content ol li:before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #007bff;
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}

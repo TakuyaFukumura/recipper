@@ -1,0 +1,170 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}レシピ作成 - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-plus me-2"></i>新しいレシピを作成
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label required">
+                                <i class="fas fa-utensils me-2"></i>レシピ名 <span class="text-danger">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="title" 
+                                name="title" 
+                                required
+                                placeholder="例: 鶏肉の照り焼き"
+                                value="{{ request.POST.title|default_if_none:"" }}"
+                            >
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="ingredients" class="form-label required">
+                                <i class="fas fa-carrot me-2"></i>材料 <span class="text-danger">*</span>
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="ingredients" 
+                                name="ingredients" 
+                                rows="6"
+                                required
+                                placeholder="例:&#10;・鶏もも肉 300g&#10;・醤油 大さじ3&#10;・みりん 大さじ2&#10;・砂糖 大さじ1&#10;・サラダ油 適量"
+                            >{{ request.POST.ingredients|default_if_none:"" }}</textarea>
+                            <div class="form-text">
+                                材料と分量を入力してください。1行ずつ入力することをお勧めします。
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="instructions" class="form-label required">
+                                <i class="fas fa-list-ol me-2"></i>作り方 <span class="text-danger">*</span>
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="instructions" 
+                                name="instructions" 
+                                rows="8"
+                                required
+                                placeholder="例:&#10;1. 鶏肉を一口大に切ります&#10;2. フライパンに油を熱し、鶏肉を焼きます&#10;3. 調味料を加えて照りが出るまで煮詰めます&#10;4. お皿に盛り付けて完成です"
+                            >{{ request.POST.instructions|default_if_none:"" }}</textarea>
+                            <div class="form-text">
+                                手順を順番に入力してください。1行ずつ入力することをお勧めします。
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="cooking_time" class="form-label">
+                                        <i class="fas fa-clock me-2"></i>調理時間（分）
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="cooking_time" 
+                                        name="cooking_time"
+                                        min="1" 
+                                        max="300"
+                                        placeholder="30"
+                                        value="{{ request.POST.cooking_time|default_if_none:"" }}"
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="servings" class="form-label">
+                                        <i class="fas fa-users me-2"></i>何人分
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="servings" 
+                                        name="servings"
+                                        min="1" 
+                                        max="20"
+                                        placeholder="2"
+                                        value="{{ request.POST.servings|default_if_none:"" }}"
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="difficulty" class="form-label">
+                                        <i class="fas fa-signal me-2"></i>難易度
+                                    </label>
+                                    <select class="form-select" id="difficulty" name="difficulty">
+                                        {% for value, display in difficulty_choices %}
+                                        <option value="{{ value }}" {% if request.POST.difficulty == value or value == "medium" and not request.POST.difficulty %}selected{% endif %}>
+                                            {{ display }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>レシピを保存
+                            </button>
+                            <a href="{% url 'recipe_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>レシピ一覧に戻る
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- ヒント -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>レシピ作成のヒント
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>材料の書き方:</h6>
+                            <ul class="small">
+                                <li>・鶏もも肉 300g</li>
+                                <li>・玉ねぎ 1個</li>
+                                <li>・醤油 大さじ2</li>
+                                <li>・塩 適量</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>作り方の書き方:</h6>
+                            <ul class="small">
+                                <li>1. 材料を準備します</li>
+                                <li>2. 野菜を切ります</li>
+                                <li>3. 炒めます</li>
+                                <li>4. 盛り付けて完成</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.required {
+    font-weight: 600;
+}
+</style>
+{% endblock %}

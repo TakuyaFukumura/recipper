@@ -1,0 +1,211 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}レシピ一覧 - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-list me-2"></i>レシピ一覧
+                </h2>
+                <div>
+                    <a href="{% url 'recipe_create' %}" class="btn btn-primary me-2">
+                        <i class="fas fa-plus me-1"></i>レシピ作成
+                    </a>
+                    <a href="{% url 'ai_recipe_generate' %}" class="btn btn-success">
+                        <i class="fas fa-robot me-1"></i>AI 生成
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="search" class="form-label">
+                                <i class="fas fa-search me-1"></i>キーワード検索
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="search" 
+                                name="search" 
+                                placeholder="レシピ名または材料で検索"
+                                value="{{ search_query }}"
+                            >
+                        </div>
+                        <div class="col-md-4">
+                            <label for="difficulty" class="form-label">
+                                <i class="fas fa-signal me-1"></i>難易度
+                            </label>
+                            <select class="form-select" id="difficulty" name="difficulty">
+                                <option value="">すべて</option>
+                                {% for value, display in difficulty_choices %}
+                                <option value="{{ value }}" {% if difficulty_filter == value %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-1"></i>検索
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe List -->
+    {% if page_obj %}
+    <div class="row">
+        {% for recipe in page_obj %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card recipe-card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        {% if recipe.is_ai_generated %}
+                            <span class="badge ai-badge text-white">
+                                <i class="fas fa-robot me-1"></i>AI
+                            </span>
+                        {% endif %}
+                    </div>
+                    <p class="card-text text-muted small">
+                        <strong>材料:</strong><br>
+                        {{ recipe.ingredients|truncatechars:100 }}
+                    </p>
+                    <div class="row text-center mb-3">
+                        <div class="col-4">
+                            <small class="text-muted">
+                                <i class="fas fa-clock d-block mb-1"></i>
+                                {% if recipe.cooking_time %}{{ recipe.cooking_time }}分{% else %}未設定{% endif %}
+                            </small>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted">
+                                <i class="fas fa-users d-block mb-1"></i>
+                                {% if recipe.servings %}{{ recipe.servings }}人分{% else %}未設定{% endif %}
+                            </small>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted">
+                                <i class="fas fa-signal d-block mb-1"></i>
+                                {{ recipe.get_difficulty_display }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>詳細
+                        </a>
+                        <a href="{% url 'recipe_edit' recipe.pk %}" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-edit me-1"></i>編集
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <small class="text-muted">
+                        <i class="fas fa-calendar me-1"></i>
+                        {{ recipe.created_at|date:"Y年n月j日" }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="レシピページネーション">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty_filter %}&difficulty={{ difficulty_filter }}{% endif %}">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty_filter %}&difficulty={{ difficulty_filter }}{% endif %}">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty_filter %}&difficulty={{ difficulty_filter }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty_filter %}&difficulty={{ difficulty_filter }}{% endif %}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if difficulty_filter %}&difficulty={{ difficulty_filter }}{% endif %}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Results Info -->
+    <div class="row">
+        <div class="col-12">
+            <p class="text-muted text-center">
+                {% if search_query or difficulty_filter %}
+                    検索結果: {{ page_obj.paginator.count }}件のレシピが見つかりました
+                    {% if search_query %}(キーワード: "{{ search_query }}"){% endif %}
+                    {% if difficulty_filter %}(難易度: {{ difficulty_filter }}){% endif %}
+                {% else %}
+                    全{{ page_obj.paginator.count }}件のレシピ
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle me-2"></i>
+                {% if search_query or difficulty_filter %}
+                    検索条件に一致するレシピが見つかりませんでした。
+                {% else %}
+                    まだレシピが登録されていません。
+                {% endif %}
+                <br>
+                <a href="{% url 'ai_recipe_generate' %}" class="alert-link">AI でレシピを生成</a>
+                するか、
+                <a href="{% url 'recipe_create' %}" class="alert-link">手動でレシピを作成</a>
+                してみましょう。
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

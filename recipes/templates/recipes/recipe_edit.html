@@ -1,0 +1,138 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}レシピ編集 - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-edit me-2"></i>レシピを編集: {{ recipe.title }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label required">
+                                <i class="fas fa-utensils me-2"></i>レシピ名 <span class="text-danger">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="title" 
+                                name="title" 
+                                required
+                                value="{{ recipe.title }}"
+                            >
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="ingredients" class="form-label required">
+                                <i class="fas fa-carrot me-2"></i>材料 <span class="text-danger">*</span>
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="ingredients" 
+                                name="ingredients" 
+                                rows="6"
+                                required
+                            >{{ recipe.ingredients }}</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="instructions" class="form-label required">
+                                <i class="fas fa-list-ol me-2"></i>作り方 <span class="text-danger">*</span>
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="instructions" 
+                                name="instructions" 
+                                rows="8"
+                                required
+                            >{{ recipe.instructions }}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="cooking_time" class="form-label">
+                                        <i class="fas fa-clock me-2"></i>調理時間（分）
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="cooking_time" 
+                                        name="cooking_time"
+                                        min="1" 
+                                        max="300"
+                                        value="{{ recipe.cooking_time|default_if_none:"" }}"
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="servings" class="form-label">
+                                        <i class="fas fa-users me-2"></i>何人分
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="servings" 
+                                        name="servings"
+                                        min="1" 
+                                        max="20"
+                                        value="{{ recipe.servings|default_if_none:"" }}"
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="difficulty" class="form-label">
+                                        <i class="fas fa-signal me-2"></i>難易度
+                                    </label>
+                                    <select class="form-select" id="difficulty" name="difficulty">
+                                        {% for value, display in difficulty_choices %}
+                                        <option value="{{ value }}" {% if recipe.difficulty == value %}selected{% endif %}>
+                                            {{ display }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg text-dark">
+                                <i class="fas fa-save me-2"></i>変更を保存
+                            </button>
+                            <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>詳細ページに戻る
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if recipe.is_ai_generated %}
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-robot me-2"></i>
+                <strong>AI生成レシピの編集</strong><br>
+                このレシピは AI によって生成されたものです。お好みに合わせて自由に編集してください。
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.required {
+    font-weight: 600;
+}
+</style>
+{% endblock %}

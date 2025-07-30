@@ -1,0 +1,144 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}ホーム - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+                <div class="text-center">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-utensils me-3"></i>
+                        レシピ提案アプリ
+                    </h1>
+                    <p class="lead mb-4">
+                        AIを活用した料理レシピの提案と管理で、<br>
+                        美味しい料理作りをサポートします
+                    </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <a href="{% url 'ai_recipe_generate' %}" class="btn btn-light btn-lg me-3 mb-2">
+                                <i class="fas fa-robot me-2"></i>AI でレシピ生成
+                            </a>
+                            <a href="{% url 'recipe_create' %}" class="btn btn-outline-light btn-lg mb-2">
+                                <i class="fas fa-plus me-2"></i>レシピを作成
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-robot fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">AI レシピ生成</h5>
+                    <p class="card-text">
+                        材料や好みを入力するだけで、AIが最適なレシピを提案します。
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-book fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">レシピ管理</h5>
+                    <p class="card-text">
+                        お気に入りのレシピを保存して、いつでも簡単に検索・閲覧できます。
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-search fa-3x text-info"></i>
+                    </div>
+                    <h5 class="card-title">簡単検索</h5>
+                    <p class="card-text">
+                        レシピ名や材料で検索して、作りたい料理をすぐに見つけられます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Recipes -->
+    {% if recent_recipes %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-clock me-2"></i>最新のレシピ
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        {% for recipe in recent_recipes %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card recipe-card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        {% if recipe.is_ai_generated %}
+                            <span class="badge ai-badge text-white">
+                                <i class="fas fa-robot me-1"></i>AI
+                            </span>
+                        {% endif %}
+                    </div>
+                    <p class="card-text text-muted small">
+                        {{ recipe.ingredients|truncatechars:100 }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            {% if recipe.cooking_time %}{{ recipe.cooking_time }}分{% else %}時間未設定{% endif %}
+                        </small>
+                        <small class="text-muted">
+                            <i class="fas fa-signal me-1"></i>
+                            {{ recipe.get_difficulty_display }}
+                        </small>
+                    </div>
+                    <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-primary">
+                        <i class="fas fa-eye me-1"></i>詳細を見る
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="{% url 'recipe_list' %}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-list me-2"></i>すべてのレシピを見る
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle me-2"></i>
+                まだレシピが登録されていません。
+                <a href="{% url 'ai_recipe_generate' %}" class="alert-link">AI でレシピを生成</a>
+                するか、
+                <a href="{% url 'recipe_create' %}" class="alert-link">手動でレシピを作成</a>
+                してみましょう。
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

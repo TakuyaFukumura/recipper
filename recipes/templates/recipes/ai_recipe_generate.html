@@ -1,0 +1,152 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}AI レシピ生成 - レシピ提案アプリ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-robot me-2"></i>AI レシピ生成
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                        条件を入力すると、AIが最適なレシピを提案します。<br>
+                        すべての項目は任意です。空欄でも生成できます。
+                    </p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="ingredients" class="form-label">
+                                <i class="fas fa-carrot me-2"></i>使用したい材料
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="ingredients" 
+                                name="ingredients" 
+                                rows="3"
+                                placeholder="例: 鶏肉、玉ねぎ、トマト缶"
+                            >{{ request.POST.ingredients|default_if_none:"" }}</textarea>
+                            <div class="form-text">
+                                使いたい材料を入力してください（複数可）
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cuisine_type" class="form-label">
+                                        <i class="fas fa-globe me-2"></i>料理の種類
+                                    </label>
+                                    <select class="form-select" id="cuisine_type" name="cuisine_type">
+                                        <option value="">指定しない</option>
+                                        <option value="和食" {% if request.POST.cuisine_type == "和食" %}selected{% endif %}>和食</option>
+                                        <option value="洋食" {% if request.POST.cuisine_type == "洋食" %}selected{% endif %}>洋食</option>
+                                        <option value="中華" {% if request.POST.cuisine_type == "中華" %}selected{% endif %}>中華</option>
+                                        <option value="イタリアン" {% if request.POST.cuisine_type == "イタリアン" %}selected{% endif %}>イタリアン</option>
+                                        <option value="韓国料理" {% if request.POST.cuisine_type == "韓国料理" %}selected{% endif %}>韓国料理</option>
+                                        <option value="エスニック" {% if request.POST.cuisine_type == "エスニック" %}selected{% endif %}>エスニック</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="difficulty" class="form-label">
+                                        <i class="fas fa-signal me-2"></i>難易度
+                                    </label>
+                                    <select class="form-select" id="difficulty" name="difficulty">
+                                        <option value="">指定しない</option>
+                                        {% for value, display in difficulty_choices %}
+                                        <option value="{{ display }}" {% if request.POST.difficulty == display %}selected{% endif %}>
+                                            {{ display }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="cooking_time" class="form-label">
+                                <i class="fas fa-clock me-2"></i>調理時間の目安（分）
+                            </label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="cooking_time" 
+                                name="cooking_time"
+                                min="1" 
+                                max="300"
+                                placeholder="例: 30"
+                                value="{{ request.POST.cooking_time|default_if_none:"" }}"
+                            >
+                            <div class="form-text">
+                                この時間以内で作れるレシピを提案します
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-magic me-2"></i>AI でレシピを生成する
+                            </button>
+                            <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>戻る
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 使用例 -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>使用例
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <strong>簡単な晩ごはん:</strong>
+                                <ul class="list-unstyled ms-3">
+                                    <li>材料: 豚肉、キャベツ</li>
+                                    <li>難易度: 簡単</li>
+                                    <li>時間: 20分</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <strong>本格的な料理:</strong>
+                                <ul class="list-unstyled ms-3">
+                                    <li>材料: 牛肉、赤ワイン</li>
+                                    <li>種類: 洋食</li>
+                                    <li>難易度: 難しい</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function() {
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>生成中...';
+    });
+});
+</script>
+{% endblock %}
