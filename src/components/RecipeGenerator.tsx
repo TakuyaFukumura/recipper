@@ -102,7 +102,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
               onChange={(e) => setIngredientInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddIngredient())}
               placeholder="例: 鶏肉, 玉ねぎ"
-              className="flex-1 rounded-md border-gray-300 border p-2"
+              className="flex-1 rounded-md border-gray-300 border p-2 text-black"
             />
             <button
               type="button"
@@ -141,7 +141,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
             value={formData.cuisine || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, cuisine: e.target.value }))}
             placeholder="例: 和食, イタリアン, 中華"
-            className="w-full rounded-md border-gray-300 border p-2"
+            className="w-full rounded-md border-gray-300 border p-2 text-black"
           />
         </div>
 
@@ -153,7 +153,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
           <select
             value={formData.difficulty || 'medium'}
             onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value as 'easy' | 'medium' | 'hard' }))}
-            className="w-full rounded-md border-gray-300 border p-2"
+            className="w-full rounded-md border-gray-300 border p-2 text-black"
           >
             <option value="easy">簡単</option>
             <option value="medium">普通</option>
@@ -172,7 +172,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
             onChange={(e) => setFormData(prev => ({ ...prev, cookingTime: parseInt(e.target.value) || 30 }))}
             min="5"
             max="300"
-            className="w-full rounded-md border-gray-300 border p-2"
+            className="w-full rounded-md border-gray-300 border p-2 text-black"
           />
         </div>
 
@@ -193,7 +193,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
             <button
               type="button"
               onClick={handleAddDietary}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-black"
             >
               追加
             </button>
