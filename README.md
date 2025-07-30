@@ -76,6 +76,9 @@ npm run dev
 ### 1. 環境変数の設定
 
 プロジェクトルートに`.env`ファイルを作成：
+```bash
+touch .env
+```
 
 ```env
 GEMINI_API_KEY=your_api_key_here
