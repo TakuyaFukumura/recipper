@@ -99,11 +99,12 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
         )}
         {/* 材料入力 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="ingredient" className="block text-sm font-medium text-gray-700 mb-2">
             使いたい材料
           </label>
           <div className="flex gap-2 mb-2">
             <input
+              id="ingredient"
               type="text"
               value={ingredientInput}
               onChange={(e) => setIngredientInput(e.target.value)}
