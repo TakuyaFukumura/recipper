@@ -13,6 +13,9 @@ export default function Home() {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | RecipeGenerationResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState<string | null>(null); // 成功メッセージ用
+  // 削除確認モーダル用state
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     fetchRecipes();
@@ -69,23 +72,32 @@ export default function Home() {
     }
   };
 
-  const handleDeleteRecipe = async (id: string) => {
-    if (!confirm('このレシピを削除しますか？')) return;
+  // 削除確認モーダル表示関数
+  const openDeleteModal = (id: string) => {
+    setDeleteTargetId(id);
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = () => {
+    setDeleteTargetId(null);
+    setIsDeleteModalOpen(false);
+  };
 
+  const handleDeleteRecipe = async (id: string) => {
     try {
       const response = await fetch(`/api/recipes/${id}`, {
         method: 'DELETE',
       });
-
       if (response.ok) {
         setRecipes(prev => prev.filter(recipe => recipe.id !== id));
-        alert('レシピが削除されました。');
+        setSuccessMessage('レシピが削除されました。');
       } else {
         throw new Error('Failed to delete recipe');
       }
     } catch (error) {
       console.error('Error deleting recipe:', error);
       alert('レシピの削除に失敗しました。');
+    } finally {
+      closeDeleteModal();
     }
   };
 
@@ -100,6 +112,25 @@ export default function Home() {
       {successMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-all">
           {successMessage}
+        </div>
+      )}
+      {/* 削除確認モーダル */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+            <h3 className="text-lg font-bold mb-4">レシピ削除の確認</h3>
+            <p className="mb-6">このレシピを削除しますか？</p>
+            <div className="flex justify-end space-x-3">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                onClick={closeDeleteModal}
+              >キャンセル</button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => deleteTargetId && handleDeleteRecipe(deleteTargetId)}
+              >削除</button>
+            </div>
+          </div>
         </div>
       )}
       {/* Header */}
@@ -148,7 +179,6 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-gray-900">保存されたレシピ</h2>
               <p className="text-gray-600">{recipes.length} 件のレシピ</p>
             </div>
-            
             {isLoading ? (
               <div className="flex justify-center items-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
@@ -177,7 +207,7 @@ export default function Home() {
                     key={recipe.id}
                     recipe={recipe}
                     onEdit={handleEditRecipe}
-                    onDelete={handleDeleteRecipe}
+                    onDelete={openDeleteModal} // ここを変更
                   />
                 ))}
               </div>
