@@ -20,6 +20,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
 
   const [ingredientInput, setIngredientInput] = useState('');
   const [dietaryInput, setDietaryInput] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // エラー表示用
 
   const handleAddIngredient = () => {
     if (ingredientInput.trim()) {
@@ -58,7 +59,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsGenerating(true);
-
+    setErrorMessage(''); // 送信時にエラーをクリア
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -76,7 +77,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
       onRecipeGenerated(recipe);
     } catch (error) {
       console.error('Error generating recipe:', error);
-      alert('レシピの生成に失敗しました。もう一度お試しください。');
+      setErrorMessage('レシピの生成に失敗しました。もう一度お試しください。'); // 画面内表示
     } finally {
       setIsGenerating(false);
     }
@@ -90,6 +91,12 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* エラー表示 */}
+        {errorMessage && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+            {errorMessage}
+          </div>
+        )}
         {/* 材料入力 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
