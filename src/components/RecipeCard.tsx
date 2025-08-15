@@ -76,8 +76,8 @@ export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<Recipe
       <div className="mb-4">
         <h4 className="font-medium text-gray-900 mb-2">材料:</h4>
         <ul className="text-sm text-gray-600 space-y-1">
-          {recipe.ingredients.slice(0, 3).map((ingredient, index) => (
-            <li key={index} className="flex items-center">
+          {recipe.ingredients.slice(0, 3).map((ingredient) => (
+            <li key={ingredient} className="flex items-center">
               <span className="w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
               {ingredient}
             </li>
@@ -90,9 +90,9 @@ export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<Recipe
 
       {recipe.tags && recipe.tags.length > 0 && (
         <div className="flex flex-wrap gap-1">
-          {recipe.tags.map((tag, index) => (
+          {recipe.tags.map((tag) => (
             <span
-              key={index}
+              key={tag}
               className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
             >
               #{tag}
