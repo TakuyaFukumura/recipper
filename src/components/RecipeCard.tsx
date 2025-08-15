@@ -90,9 +90,9 @@ export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<Recipe
 
       {recipe.tags && recipe.tags.length > 0 && (
         <div className="flex flex-wrap gap-1">
-          {recipe.tags.map((tag) => (
+          {recipe.tags.map((tag, idx) => (
             <span
-              key={tag}
+              key={`${tag}-${idx}`}
               className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
             >
               #{tag}
