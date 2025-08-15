@@ -116,21 +116,30 @@ export default function Home() {
       )}
       {/* 削除確認モーダル */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
-            <h3 className="text-lg font-bold mb-4">レシピ削除の確認</h3>
-            <p className="mb-6">このレシピを削除しますか？</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-200">
+          <div className="bg-white rounded-xl shadow-2xl border border-gray-200 p-8 w-full max-w-sm animate-fade-in">
+            <h3 className="text-xl font-extrabold mb-4 text-red-600 text-center drop-shadow">レシピ削除の確認</h3>
+            <p className="mb-6 text-gray-700 text-center text-base">このレシピを削除しますか？<br /><span className='text-xs text-gray-400'>(この操作は元に戻せません)</span></p>
             <div className="flex justify-end space-x-3">
               <button
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="px-5 py-2 bg-gray-100 rounded-lg hover:bg-gray-300 text-gray-700 font-semibold shadow"
                 onClick={closeDeleteModal}
               >キャンセル</button>
               <button
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                className="px-5 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 font-semibold shadow"
                 onClick={() => deleteTargetId && handleDeleteRecipe(deleteTargetId)}
               >削除</button>
             </div>
           </div>
+          <style jsx>{`
+            .animate-fade-in {
+              animation: fadeInModal 0.25s ease;
+            }
+            @keyframes fadeInModal {
+              from { opacity: 0; transform: scale(0.95); }
+              to { opacity: 1; transform: scale(1); }
+            }
+          `}</style>
         </div>
       )}
       {/* Header */}
