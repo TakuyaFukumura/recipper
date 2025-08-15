@@ -195,12 +195,12 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
               onChange={(e) => setDietaryInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddDietary())}
               placeholder="例: ベジタリアン, グルテンフリー"
-              className="flex-1 rounded-md border-gray-300 border p-2"
+              className="flex-1 rounded-md border-gray-300 border p-2 text-black"
             />
             <button
               type="button"
               onClick={handleAddDietary}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-black"
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
             >
               追加
             </button>
