@@ -12,10 +12,18 @@ export default function Home() {
   const [currentView, setCurrentView] = useState<'list' | 'generate' | 'detail'>('list');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | RecipeGenerationResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); // 成功メッセージ用
 
   useEffect(() => {
     fetchRecipes();
   }, []);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => setSuccessMessage(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   const fetchRecipes = async () => {
     try {
@@ -51,7 +59,7 @@ export default function Home() {
         setRecipes(prev => [savedRecipe, ...prev]);
         setCurrentView('list');
         setSelectedRecipe(null);
-        alert('レシピが保存されました！');
+        setSuccessMessage('レシピが保存されました！');
       } else {
         throw new Error('Failed to save recipe');
       }
@@ -88,6 +96,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* インライン通知表示 */}
+      {successMessage && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-all">
+          {successMessage}
+        </div>
+      )}
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
