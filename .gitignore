@@ -43,3 +43,6 @@ next-env.d.ts
 # Editor/IDE
 .idea/
 .vscode/
+
+# prisma database
+prisma/dev.db
