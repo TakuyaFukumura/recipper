@@ -1,11 +1,11 @@
 import { Recipe, RecipeGenerationResponse } from '@/types/recipe';
 import { Clock, User, Tag, ChefHat } from 'lucide-react';
 
-interface RecipeDetailProps {
-  recipe: Recipe | RecipeGenerationResponse; // Generated recipes that don't have id/dates yet
+type RecipeDetailProps = Readonly<{
+  recipe: Recipe | RecipeGenerationResponse;
   onSave?: (recipe: RecipeGenerationResponse) => void;
   onClose?: () => void;
-}
+}>;
 
 export default function RecipeDetail({ recipe, onSave, onClose }: RecipeDetailProps) {
   const difficultyColors = {
