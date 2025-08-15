@@ -5,10 +5,10 @@ import { RecipeGenerationRequest, RecipeGenerationResponse } from '@/types/recip
 import { Loader2, Sparkles } from 'lucide-react';
 
 interface RecipeGeneratorProps {
-  onRecipeGenerated: (recipe: RecipeGenerationResponse) => void;
+  readonly onRecipeGenerated: (recipe: RecipeGenerationResponse) => void;
 }
 
-export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorProps) {
+export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGeneratorProps>) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [formData, setFormData] = useState<RecipeGenerationRequest>({
     ingredients: [],
@@ -108,7 +108,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
               type="text"
               value={ingredientInput}
               onChange={(e) => setIngredientInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddIngredient())}
+              onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddIngredient())}
               placeholder="例: 鶏肉, 玉ねぎ"
               className="flex-1 rounded-md border-gray-300 border p-2 text-black"
             />
@@ -123,7 +123,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
           <div className="flex flex-wrap gap-2">
             {formData.ingredients?.map((ingredient, index) => (
               <span
-                key={index}
+                key={ingredient}
                 className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center"
               >
                 {ingredient}
@@ -141,10 +141,11 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
 
         {/* 料理の種類 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-2">
             料理の種類
           </label>
           <input
+            id="cuisine"
             type="text"
             value={formData.cuisine || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, cuisine: e.target.value }))}
@@ -155,10 +156,11 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
 
         {/* 難易度 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700 mb-2">
             難易度
           </label>
           <select
+            id="difficulty"
             value={formData.difficulty || 'medium'}
             onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value as 'easy' | 'medium' | 'hard' }))}
             className="w-full rounded-md border-gray-300 border p-2 text-black"
@@ -171,10 +173,11 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
 
         {/* 調理時間 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="cookingTime" className="block text-sm font-medium text-gray-700 mb-2">
             調理時間（分）
           </label>
           <input
+            id="cookingTime"
             type="number"
             value={formData.cookingTime || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, cookingTime: parseInt(e.target.value) || 30 }))}
@@ -186,15 +189,21 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
 
         {/* 食事制限 */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="dietary" className="block text-sm font-medium text-gray-700 mb-2">
             食事制限・こだわり
           </label>
           <div className="flex gap-2 mb-2">
             <input
+              id="dietary"
               type="text"
               value={dietaryInput}
               onChange={(e) => setDietaryInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddDietary())}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAddDietary();
+                }
+              }}
               placeholder="例: ベジタリアン, グルテンフリー"
               className="flex-1 rounded-md border-gray-300 border p-2 text-black"
             />
@@ -207,15 +216,15 @@ export default function RecipeGenerator({ onRecipeGenerated }: RecipeGeneratorPr
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
-            {formData.dietary?.map((dietary, index) => (
+            {formData.dietary?.map((dietary) => (
               <span
-                key={index}
+                key={dietary}
                 className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm flex items-center"
               >
                 {dietary}
                 <button
                   type="button"
-                  onClick={() => removeDietary(index)}
+                  onClick={() => removeDietary(formData.dietary.indexOf(dietary))}
                   className="ml-2 text-green-600 hover:text-green-800"
                 >
                   ×
