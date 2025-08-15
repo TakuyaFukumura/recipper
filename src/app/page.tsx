@@ -106,6 +106,50 @@ export default function Home() {
     setCurrentView('detail');
   };
 
+  // JSX分岐処理はreturn文の直前に移動
+  let content;
+  if (currentView === 'list') {
+    if (isLoading) {
+      content = (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        </div>
+      );
+    } else if (recipes.length === 0) {
+      content = (
+        <div className="text-center py-12">
+          <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            まだレシピがありません
+          </h3>
+          <p className="text-gray-600 mb-4">
+            AIを使って新しいレシピを生成してみましょう！
+          </p>
+          <button
+            onClick={() => setCurrentView('generate')}
+            className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            レシピを生成
+          </button>
+        </div>
+      );
+    } else {
+      content = (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recipes.map((recipe) => (
+            <RecipeCard
+              key={recipe.id}
+              recipe={recipe}
+              onEdit={handleEditRecipe}
+              onDelete={openDeleteModal}
+            />
+          ))}
+        </div>
+      );
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* インライン通知表示 */}
@@ -188,39 +232,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-gray-900">保存されたレシピ</h2>
               <p className="text-gray-600">{recipes.length} 件のレシピ</p>
             </div>
-            {isLoading ? (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
-              </div>
-            ) : recipes.length === 0 ? (
-              <div className="text-center py-12">
-                <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  まだレシピがありません
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  AIを使って新しいレシピを生成してみましょう！
-                </p>
-                <button
-                  onClick={() => setCurrentView('generate')}
-                  className="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  レシピを生成
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recipes.map((recipe) => (
-                  <RecipeCard
-                    key={recipe.id}
-                    recipe={recipe}
-                    onEdit={handleEditRecipe}
-                    onDelete={openDeleteModal} // ここを変更
-                  />
-                ))}
-              </div>
-            )}
+            {content}
           </div>
         )}
 
