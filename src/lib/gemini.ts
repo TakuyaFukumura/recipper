@@ -6,7 +6,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 export async function generateRecipe(
   request: RecipeGenerationRequest
 ): Promise<RecipeGenerationResponse> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   // Build the prompt based on the request
   let prompt = 'Please generate a detailed recipe in JSON format with the following structure:\n';
