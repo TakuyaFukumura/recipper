@@ -88,10 +88,10 @@ const createMockPrisma = (): MockPrismaClient => ({
 let prismaClient: MockPrismaClient;
 
 try {
-  // Try to import Prisma client dynamically
-  const PrismaClientModule = eval('require')('@prisma/client');
+  // Try to import Prisma client dynamically using import()
+  const PrismaClientModule = await import('@prisma/client');
   const { PrismaClient } = PrismaClientModule;
-  
+
   const globalForPrisma = globalThis as unknown as {
     prisma: MockPrismaClient | undefined;
   };
