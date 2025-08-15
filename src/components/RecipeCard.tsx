@@ -2,12 +2,12 @@ import { Recipe } from '@/types/recipe';
 import { Clock, User, Tag } from 'lucide-react';
 
 interface RecipeCardProps {
-  recipe: Recipe;
-  onEdit?: (recipe: Recipe) => void;
-  onDelete?: (id: string) => void;
+  readonly recipe: Recipe;
+  readonly onEdit?: (recipe: Recipe) => void;
+  readonly onDelete?: (id: string) => void;
 }
 
-export default function RecipeCard({ recipe, onEdit, onDelete }: RecipeCardProps) {
+export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<RecipeCardProps>) {
   const difficultyColors = {
     easy: 'bg-green-100 text-green-800',
     medium: 'bg-yellow-100 text-yellow-800',
