@@ -224,7 +224,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                 {dietary}
                 <button
                   type="button"
-                  onClick={() => removeDietary(formData.dietary.indexOf(dietary))}
+                  onClick={() => removeDietary(formData.dietary?.indexOf(dietary) ?? -1)}
                   className="ml-2 text-green-600 hover:text-green-800"
                 >
                   ×

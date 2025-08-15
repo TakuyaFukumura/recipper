@@ -19,6 +19,20 @@ Gemini AIを使用した料理レシピ提案・管理アプリケーション�
 - **データベース**: SQLite + Prisma ORM
 - **AI**: Google Gemini API
 - **デプロイ**: Vercel
+- **CI/CD**: GitHub Actions
+
+## 🔄 継続的インテグレーション (CI)
+
+このプロジェクトはGitHub Actionsを使用した自動化されたCIパイプラインを持っています：
+
+- **実行タイミング**: mainブランチへのプッシュ、プルリクエスト作成・更新時
+- **実行内容**:
+  - ESLintによるコードの静的解析
+  - TypeScriptの型チェック
+  - Next.jsアプリケーションのビルドテスト
+- **環境**: Ubuntu Latest, Node.js 20
+
+CI設定ファイル: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
 ## 📋 前提条件
 
