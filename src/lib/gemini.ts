@@ -1,7 +1,11 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { RecipeGenerationRequest, RecipeGenerationResponse } from '@/types/recipe';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  throw new Error('GEMINI_API_KEY is not set. Please provide a valid API key.');
+}
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function generateRecipe(
   request: RecipeGenerationRequest
