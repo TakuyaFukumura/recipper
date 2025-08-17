@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 export async function generateRecipe(
   request: RecipeGenerationRequest
 ): Promise<RecipeGenerationResponse> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   // Build the prompt based on the request
   let prompt = 'Please generate a detailed recipe in JSON format with the following structure:\n';
