@@ -37,7 +37,9 @@ export function ThemeProvider({children}: Readonly<{ children: ReactNode }>) {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
         localStorage.setItem('theme', newTheme);
-        document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        if (typeof window !== 'undefined') {
+            document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        }
     };
 
     const value = useMemo(() => ({theme, toggleTheme}), [theme]);
