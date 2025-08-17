@@ -102,7 +102,7 @@ export default function Home() {
     }
   };
 
-  const handleEditRecipe = (recipe: Recipe) => {
+  const handleShowRecipeDetail = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
     setCurrentView('detail');
   };
@@ -142,7 +142,7 @@ export default function Home() {
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
-              onEdit={handleEditRecipe}
+              onShowDetail={handleShowRecipeDetail}
               onDelete={openDeleteModal}
             />
           ))}
