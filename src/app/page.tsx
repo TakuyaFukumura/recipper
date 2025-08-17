@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import RecipeCard from '@/components/RecipeCard';
 import RecipeGenerator from '@/components/RecipeGenerator';
 import RecipeDetail from '@/components/RecipeDetail';
+import ThemeToggle from '@/components/ThemeToggle';
 import { Recipe, RecipeGenerationResponse } from '@/types/recipe';
 import { ChefHat, Plus, List } from 'lucide-react';
 
@@ -118,11 +119,11 @@ export default function Home() {
     } else if (recipes.length === 0) {
       content = (
         <div className="text-center py-12">
-          <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <ChefHat className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
             まだレシピがありません
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
             AIを使って新しいレシピを生成してみましょう！
           </p>
           <button
@@ -151,7 +152,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* インライン通知表示 */}
       {successMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50 transition-all">
@@ -161,12 +162,12 @@ export default function Home() {
       {/* 削除確認モーダル */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-200">
-          <div className="bg-white rounded-xl shadow-2xl border border-gray-200 p-8 w-full max-w-sm animate-fade-in">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-600 p-8 w-full max-w-sm animate-fade-in">
             <h3 className="text-xl font-extrabold mb-4 text-red-600 text-center drop-shadow">レシピ削除の確認</h3>
-            <p className="mb-6 text-gray-700 text-center text-base">このレシピを削除しますか？<br /><span className='text-xs text-gray-400'>(この操作は元に戻せません)</span></p>
+            <p className="mb-6 text-gray-700 dark:text-gray-300 text-center text-base">このレシピを削除しますか？<br /><span className='text-xs text-gray-400'>（この操作は元に戻せません）</span></p>
             <div className="flex justify-end space-x-3">
               <button
-                className="px-5 py-2 bg-gray-100 rounded-lg hover:bg-gray-300 text-gray-700 font-semibold shadow"
+                className="px-5 py-2 bg-gray-100 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 font-semibold shadow"
                 onClick={closeDeleteModal}
               >キャンセル</button>
               <button
@@ -187,39 +188,42 @@ export default function Home() {
         </div>
       )}
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <ChefHat className="w-8 h-8 text-orange-500 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">Recipper</h1>
-              <span className="ml-2 text-sm text-gray-500">料理レシピ提案アプリ</span>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Recipper</h1>
+              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">料理レシピ提案アプリ</span>
             </div>
             
-            <nav className="flex items-center space-x-4">
-              <button
-                onClick={() => setCurrentView('list')}
-                className={`flex items-center px-4 py-2 rounded-md ${
-                  currentView === 'list' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <List className="w-4 h-4 mr-2" />
-                レシピ一覧
-              </button>
-              <button
-                onClick={() => setCurrentView('generate')}
-                className={`flex items-center px-4 py-2 rounded-md ${
-                  currentView === 'generate' 
-                    ? 'bg-yellow-500 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                レシピ生成
-              </button>
-            </nav>
+            <div className="flex items-center space-x-4">
+              <nav className="flex items-center space-x-4">
+                <button
+                  onClick={() => setCurrentView('list')}
+                  className={`flex items-center px-4 py-2 rounded-md ${
+                    currentView === 'list' 
+                      ? 'bg-blue-600 text-white' 
+                      : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+                  }`}
+                >
+                  <List className="w-4 h-4 mr-2" />
+                  レシピ一覧
+                </button>
+                <button
+                  onClick={() => setCurrentView('generate')}
+                  className={`flex items-center px-4 py-2 rounded-md ${
+                    currentView === 'generate' 
+                      ? 'bg-yellow-500 text-white' 
+                      : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+                  }`}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  レシピ生成
+                </button>
+              </nav>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
@@ -229,8 +233,8 @@ export default function Home() {
         {currentView === 'list' && (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">保存されたレシピ</h2>
-              <p className="text-gray-600">{recipes.length} 件のレシピ</p>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">保存されたレシピ</h2>
+              <p className="text-gray-600 dark:text-gray-400">{recipes.length} 件のレシピ</p>
             </div>
             {content}
           </div>
@@ -239,8 +243,8 @@ export default function Home() {
         {currentView === 'generate' && (
           <div>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">AIレシピ生成</h2>
-              <p className="text-gray-600">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">AIレシピ生成</h2>
+              <p className="text-gray-600 dark:text-gray-400">
                 材料や好みを入力して、AIが最適なレシピを提案します。
               </p>
             </div>

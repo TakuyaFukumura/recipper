@@ -84,22 +84,22 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <div className="flex items-center mb-6">
         <Sparkles className="w-6 h-6 text-yellow-500 mr-2" />
-        <h2 className="text-2xl font-bold text-gray-900">レシピ生成</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">レシピ生成</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* エラー表示 */}
         {errorMessage && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+          <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded">
             {errorMessage}
           </div>
         )}
         {/* 材料入力 */}
         <div>
-          <label htmlFor="ingredient" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="ingredient" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             使いたい材料
           </label>
           <div className="flex gap-2 mb-2">
@@ -115,7 +115,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                 }
               }}
               placeholder="例: 鶏肉, 玉ねぎ"
-              className="flex-1 rounded-md border-gray-300 border p-2 text-black"
+              className="flex-1 rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
             />
             <button
               type="button"
@@ -129,13 +129,13 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
             {formData.ingredients?.map((ingredient, index) => (
               <span
                 key={ingredient}
-                className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center"
+                className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-sm flex items-center"
               >
                 {ingredient}
                 <button
                   type="button"
                   onClick={() => removeIngredient(index)}
-                  className="ml-2 text-blue-600 hover:text-blue-800"
+                  className="ml-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                 >
                   ×
                 </button>
@@ -146,7 +146,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
 
         {/* 料理の種類 */}
         <div>
-          <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             料理の種類
           </label>
           <input
@@ -155,20 +155,20 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
             value={formData.cuisine || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, cuisine: e.target.value }))}
             placeholder="例: 和食, イタリアン, 中華"
-            className="w-full rounded-md border-gray-300 border p-2 text-black"
+            className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
           />
         </div>
 
         {/* 難易度 */}
         <div>
-          <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             難易度
           </label>
           <select
             id="difficulty"
             value={formData.difficulty || 'medium'}
             onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value as 'easy' | 'medium' | 'hard' }))}
-            className="w-full rounded-md border-gray-300 border p-2 text-black"
+            className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
           >
             <option value="easy">簡単</option>
             <option value="medium">普通</option>
@@ -178,7 +178,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
 
         {/* 調理時間 */}
         <div>
-          <label htmlFor="cookingTime" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="cookingTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             調理時間（分）
           </label>
           <input
@@ -188,13 +188,13 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
             onChange={(e) => setFormData(prev => ({ ...prev, cookingTime: parseInt(e.target.value) || 30 }))}
             min="5"
             max="300"
-            className="w-full rounded-md border-gray-300 border p-2 text-black"
+            className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
           />
         </div>
 
         {/* 食事制限 */}
         <div>
-          <label htmlFor="dietary" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="dietary" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             食事制限・こだわり
           </label>
           <div className="flex gap-2 mb-2">
@@ -210,7 +210,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                 }
               }}
               placeholder="例: ベジタリアン, グルテンフリー"
-              className="flex-1 rounded-md border-gray-300 border p-2 text-black"
+              className="flex-1 rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
             />
             <button
               type="button"
@@ -224,7 +224,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
             {formData.dietary?.map((dietary) => (
               <span
                 key={dietary}
-                className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm flex items-center"
+                className="px-3 py-1 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-sm flex items-center"
               >
                 {dietary}
                 <button
@@ -233,7 +233,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                     const index = formData.dietary?.indexOf(dietary) ?? -1;
                     if (index !== -1) removeDietary(index);
                   }}
-                  className="ml-2 text-green-600 hover:text-green-800"
+                  className="ml-2 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300"
                 >
                   ×
                 </button>
