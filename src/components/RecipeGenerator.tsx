@@ -108,7 +108,12 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
               type="text"
               value={ingredientInput}
               onChange={(e) => setIngredientInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddIngredient())}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAddIngredient();
+                }
+              }}
               placeholder="例: 鶏肉, 玉ねぎ"
               className="flex-1 rounded-md border-gray-300 border p-2 text-black"
             />
@@ -224,7 +229,10 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                 {dietary}
                 <button
                   type="button"
-                  onClick={() => removeDietary(formData.dietary?.indexOf(dietary) ?? -1)}
+                  onClick={() => {
+                    const index = formData.dietary?.indexOf(dietary) ?? -1;
+                    if (index !== -1) removeDietary(index);
+                  }}
                   className="ml-2 text-green-600 hover:text-green-800"
                 >
                   ×
