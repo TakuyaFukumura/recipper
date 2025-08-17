@@ -16,8 +16,8 @@ export function ThemeProvider({children}: Readonly<{ children: ReactNode }>) {
 
     useEffect(() => {
         // ローカルストレージからテーマ設定を読み込む
-        const savedTheme = typeof window !== 'undefined' ? (localStorage.getItem('theme') as Theme) : undefined;
-        if (savedTheme) {
+        const savedTheme = typeof window !== 'undefined' ? localStorage.getItem('theme') : undefined;
+        if (savedTheme === 'light' || savedTheme === 'dark') {
             setTheme(savedTheme);
             if (typeof window !== 'undefined') {
                 document.documentElement.classList.toggle('dark', savedTheme === 'dark');
