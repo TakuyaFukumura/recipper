@@ -25,16 +25,14 @@ export default function RecipeCard({ recipe, onShowDetail, onDelete }: Readonly<
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{recipe.title}</h3>
+        <button
+          type="button"
+          className={`text-xl font-semibold text-gray-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 m-0 text-left`}
+          onClick={onShowDetail ? () => onShowDetail(recipe) : undefined}
+        >
+          {recipe.title}
+        </button>
         <div className="flex gap-2">
-          {onShowDetail && (
-            <button
-              onClick={() => onShowDetail(recipe)}
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
-            >
-              詳細
-            </button>
-          )}
           {onDelete && (
             <button
               onClick={() => onDelete(recipe.id)}
