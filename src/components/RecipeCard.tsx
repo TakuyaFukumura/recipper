@@ -27,7 +27,13 @@ export default function RecipeCard({ recipe, onShowDetail, onDelete }: Readonly<
       <div className="flex justify-between items-start mb-4">
         <button
           type="button"
-          className={`text-xl font-semibold text-gray-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors bg-transparent border-none p-0 m-0 text-left`}
+          className={
+            [
+              "text-xl font-semibold text-gray-900 dark:text-white cursor-pointer",
+              "hover:text-blue-600 dark:hover:text-blue-400 transition-colors",
+              "bg-transparent border-none p-0 m-0 text-left"
+            ].join(" ")
+          }
           onClick={onShowDetail ? () => onShowDetail(recipe) : undefined}
         >
           {recipe.title}
