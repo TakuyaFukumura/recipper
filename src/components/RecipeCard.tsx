@@ -32,7 +32,7 @@ export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<Recipe
               onClick={() => onEdit(recipe)}
               className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
             >
-              編集
+              詳細
             </button>
           )}
           {onDelete && (
