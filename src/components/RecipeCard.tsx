@@ -3,11 +3,11 @@ import { Clock, User, Tag } from 'lucide-react';
 
 interface RecipeCardProps {
   readonly recipe: Recipe;
-  readonly onEdit?: (recipe: Recipe) => void;
+  readonly onShowDetail?: (recipe: Recipe) => void;
   readonly onDelete?: (id: string) => void;
 }
 
-export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<RecipeCardProps>) {
+export default function RecipeCard({ recipe, onShowDetail, onDelete }: Readonly<RecipeCardProps>) {
   const difficultyColors = {
     easy: 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200',
     medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200',
@@ -18,23 +18,27 @@ export default function RecipeCard({ recipe, onEdit, onDelete }: Readonly<Recipe
     main: 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-200',
     side: 'bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-200',
     dessert: 'bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-200',
-    appetizer: 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-200',
+    appetizer: 'bg-orange-100 text-orange-800 dark:text-orange-200',
     beverage: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-800 dark:text-cyan-200',
   };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{recipe.title}</h3>
+        <button
+          type="button"
+          className={
+            [
+              "text-xl font-semibold text-gray-900 dark:text-white cursor-pointer",
+              "hover:text-blue-600 dark:hover:text-blue-400 transition-colors",
+              "bg-transparent border-none p-0 m-0 text-left"
+            ].join(" ")
+          }
+          onClick={onShowDetail ? () => onShowDetail(recipe) : undefined}
+        >
+          {recipe.title}
+        </button>
         <div className="flex gap-2">
-          {onEdit && (
-            <button
-              onClick={() => onEdit(recipe)}
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
-            >
-              編集
-            </button>
-          )}
           {onDelete && (
             <button
               onClick={() => onDelete(recipe.id)}
