@@ -35,6 +35,12 @@ export default function Home() {
         }
     }, [successMessage]);
 
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            router.push('/auth/signin');
+        }
+    }, [status, router]);
+
     // 認証状態をチェック
     if (status === 'loading') {
         return (
@@ -48,9 +54,6 @@ export default function Home() {
     }
 
     if (status === 'unauthenticated') {
-        useEffect(() => {
-            router.push('/auth/signin');
-        }, []);
         return null;
     }
 
