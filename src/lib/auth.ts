@@ -19,8 +19,12 @@ export const authConfig: NextAuthConfig = {
                 const envUsername = process.env.AUTH_USER;
                 const envPasswordHash = process.env.AUTH_PASSWORD_HASH;
 
-                if (!envUsername || !envPasswordHash) {
-                    console.error('AUTH_USER or AUTH_PASSWORD_HASH environment variables are not set');
+                if (!envUsername) {
+                    console.error('AUTH_USER environment variable is not set');
+                    return null;
+                }
+                if (!envPasswordHash) {
+                    console.error('AUTH_PASSWORD_HASH environment variable is not set');
                     return null;
                 }
 
