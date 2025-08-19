@@ -2,6 +2,7 @@
 
 import {useState, useEffect} from 'react';
 import {useSession, signOut} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
 import RecipeCard from '@/components/RecipeCard';
 import RecipeGenerator from '@/components/RecipeGenerator';
 import RecipeDetail from '@/components/RecipeDetail';
@@ -11,6 +12,7 @@ import {ChefHat, Plus, List, LogOut, User} from 'lucide-react';
 
 export default function Home() {
     const {data: session, status} = useSession();
+    const router = useRouter();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [currentView, setCurrentView] = useState<'list' | 'generate' | 'detail'>('list');
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | RecipeGenerationResponse | null>(null);
@@ -46,14 +48,10 @@ export default function Home() {
     }
 
     if (status === 'unauthenticated') {
-        return (
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-                <div className="text-center">
-                    <ChefHat className="w-12 h-12 text-yellow-500 mx-auto mb-4"/>
-                    <p className="text-gray-600 dark:text-gray-400">認証が必要です...</p>
-                </div>
-            </div>
-        );
+        useEffect(() => {
+            router.push('/auth/signin');
+        }, []);
+        return null;
     }
 
     const fetchRecipes = async () => {
