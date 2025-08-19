@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import RecipeCard from '@/components/RecipeCard';
 import RecipeGenerator from '@/components/RecipeGenerator';
 import RecipeDetail from '@/components/RecipeDetail';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Recipe, RecipeGenerationResponse } from '@/types/recipe';
-import { ChefHat, Plus, List } from 'lucide-react';
+import { ChefHat, Plus, List, LogOut, User } from 'lucide-react';
 
 export default function Home() {
+  const { data: session, status } = useSession();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [currentView, setCurrentView] = useState<'list' | 'generate' | 'detail'>('list');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | RecipeGenerationResponse | null>(null);
@@ -19,8 +21,10 @@ export default function Home() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchRecipes();
-  }, []);
+    if (status === 'authenticated') {
+      fetchRecipes();
+    }
+  }, [status]);
 
   useEffect(() => {
     if (successMessage) {
@@ -28,6 +32,29 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [successMessage]);
+
+  // 認証状態をチェック
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <ChefHat className="w-12 h-12 text-yellow-500 mx-auto mb-4 animate-pulse" />
+          <p className="text-gray-600 dark:text-gray-400">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === 'unauthenticated') {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <ChefHat className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">認証が必要です...</p>
+        </div>
+      </div>
+    );
+  }
 
   const fetchRecipes = async () => {
     try {
@@ -222,7 +249,21 @@ export default function Home() {
                   レシピ生成
                 </button>
               </nav>
-              <ThemeToggle />
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                  <User className="w-4 h-4 mr-2" />
+                  {session?.user?.name}
+                </div>
+                <button
+                  onClick={() => signOut()}
+                  className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                  title="ログアウト"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  ログアウト
+                </button>
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </div>
