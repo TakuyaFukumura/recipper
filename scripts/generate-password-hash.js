@@ -22,7 +22,8 @@ try {
     console.log('生成されたパスワードハッシュ:');
     console.log(hash);
     console.log('\n.env.local ファイルに以下を追加してください:');
-    console.log(`AUTH_PASSWORD_HASH="${hash}"`);
+    console.log(`AUTH_PASSWORD_HASH="${hash.replace(/\$/g, '\\$')}"`);
+    console.log('\n注意: bcryptハッシュの$記号は\\でエスケープされています。');
 } catch (error) {
     console.error('パスワードハッシュの生成中にエラーが発生しました:', error);
     process.exit(1);
