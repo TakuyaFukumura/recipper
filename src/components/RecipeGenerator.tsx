@@ -8,6 +8,8 @@ interface RecipeGeneratorProps {
   readonly onRecipeGenerated: (recipe: RecipeGenerationResponse) => void;
 }
 
+const OTHER_OPTION = 'その他';
+
 export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGeneratorProps>) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [formData, setFormData] = useState<RecipeGenerationRequest>({
@@ -35,7 +37,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
     { value: 'タイ料理', label: 'タイ料理' },
     { value: 'インド料理', label: 'インド料理' },
     { value: 'メキシカン', label: 'メキシカン' },
-    { value: 'その他', label: 'その他（直接入力）' },
+    { value: OTHER_OPTION, label: 'その他（直接入力）' },
   ];
 
   const handleAddIngredient = () => {
@@ -61,7 +63,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
   // 料理の種類選択のハンドラー
   const handleCuisineTypeChange = (value: string) => {
     setSelectedCuisineType(value);
-    if (value === 'その他') {
+    if (value === OTHER_OPTION) {
       // その他が選択された場合、カスタム入力を有効にし、formDataをクリア
       setFormData(prev => ({ ...prev, cuisine: '' }));
       setCustomCuisineInput('');
@@ -201,7 +203,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
               </option>
             ))}
           </select>
-          {selectedCuisineType === 'その他' && (
+          {selectedCuisineType === OTHER_OPTION && (
             <input
               type="text"
               value={customCuisineInput}
