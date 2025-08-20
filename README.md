@@ -6,6 +6,7 @@ Gemini AIを使用した料理レシピ提案・管理アプリケーション�
 
 - **AIレシピ生成**: Gemini APIを使用して、材料や好みに基づいたレシピを自動生成
 - **レシピ管理**: 生成・保存したレシピの一覧表示、編集、削除
+- **認証機能**: NextAuth.jsによる安全なユーザー認証
 - **データベース**: SQLite + Prismaで安全なデータ管理
 - **レスポンシブデザイン**: Tailwind CSSによるモダンなUI
 - **Docker対応**: ローカル開発環境の簡単セットアップ
@@ -18,6 +19,7 @@ Gemini AIを使用した料理レシピ提案・管理アプリケーション�
 - **UI**: Tailwind CSS + Lucide React
 - **データベース**: SQLite + Prisma ORM
 - **AI**: Google Gemini API
+- **認証**: NextAuth.js + bcryptjs
 - **デプロイ**: Vercel
 - **CI/CD**: GitHub Actions
 
@@ -67,7 +69,25 @@ DATABASE_URL="file:./dev.db"
 
 # Gemini API Key (https://makersuite.google.com/app/apikey)
 GEMINI_API_KEY="your_api_key_here"
+
+# NextAuth.js 認証設定
+NEXTAUTH_SECRET="your_nextauth_secret_here"
+NEXTAUTH_URL="http://localhost:3000"
+
+# 認証用ユーザー情報
+AUTH_USER="your_username"
+AUTH_PASSWORD_HASH="your_bcrypt_hashed_password"
 ```
+
+#### パスワードハッシュの生成
+
+認証用のパスワードハッシュを生成するには、以下のスクリプトを使用してください：
+
+```bash
+node scripts/generate-password-hash.js "your_password"
+```
+
+出力されたハッシュを `AUTH_PASSWORD_HASH` 環境変数に設定してください。
 
 ### 4. データベースのセットアップ
 - Prismaクライアントの生成
@@ -87,6 +107,26 @@ npm run dev
 
 ブラウザで [http://localhost:3000](http://localhost:3000) を開いてアプリケーションにアクセスできます。
 
+## 🔐 認証機能
+
+このアプリケーションには NextAuth.js を使用した認証機能が実装されています。
+
+### 認証の特徴
+
+- **Credentials Provider**: ユーザー名とパスワードによる認証
+- **環境変数設定**: ユーザー情報は環境変数で管理
+- **パスワード暗号化**: bcryptjs による安全なパスワードハッシュ化
+- **セッション管理**: JWT による安全なセッション管理
+- **自動リダイレクト**: 未認証時の自動ログインページリダイレクト
+
+### 認証設定
+
+1. 環境変数に認証情報を設定
+2. パスワードハッシュを生成して設定
+3. アプリケーション起動後、ログインページでアクセス
+
+詳細な設定方法は上記の「環境変数の設定」セクションを参照してください。
+
 ## 🐳 Docker での開発
 
 ### 1. 環境変数の設定
@@ -98,6 +138,10 @@ touch .env
 
 ```env
 GEMINI_API_KEY=your_api_key_here
+NEXTAUTH_SECRET=your_nextauth_secret_here
+NEXTAUTH_URL=http://localhost:3000
+AUTH_USER=your_username
+AUTH_PASSWORD_HASH=your_bcrypt_hashed_password
 ```
 
 ### 2. Docker Composeで起動
