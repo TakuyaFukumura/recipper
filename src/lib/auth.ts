@@ -20,10 +20,8 @@ export const authConfig: NextAuthConfig = {
                 const envPasswordHash = process.env.AUTH_PASSWORD_HASH;
 
                 if (!envUsername || !envPasswordHash) {
-                    if (!envPasswordHash) {
-                        console.error('認証情報の設定に問題があります');
-                        return null;
-                    }
+                    console.error('認証情報の設定に問題があります');
+                    return null;
                 }
 
                 // ユーザー名の確認
