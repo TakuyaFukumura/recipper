@@ -66,16 +66,14 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
     if (value === OTHER_OPTION) {
       // その他が選択された場合、カスタム入力を有効にし、formDataをクリア
       setFormData(prev => ({ ...prev, cuisine: '' }));
-      setCustomCuisineInput('');
     } else if (value !== '') {
       // 定義済みの選択肢が選択された場合、formDataに設定
       setFormData(prev => ({ ...prev, cuisine: value }));
-      setCustomCuisineInput('');
     } else {
       // 空の選択の場合、formDataをクリア
       setFormData(prev => ({ ...prev, cuisine: '' }));
-      setCustomCuisineInput('');
     }
+    setCustomCuisineInput('');
   };
 
   // カスタム料理種類入力のハンドラー
