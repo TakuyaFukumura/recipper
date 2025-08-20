@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { RecipeGenerationRequest, RecipeGenerationResponse } from '@/types/recipe';
 import { Loader2, Sparkles } from 'lucide-react';
 
