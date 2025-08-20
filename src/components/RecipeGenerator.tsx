@@ -212,6 +212,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
               value={customCuisineInput}
               onChange={(e) => handleCustomCuisineChange(e.target.value)}
               placeholder="料理の種類を入力してください"
+              aria-label="料理の種類を入力"
               className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
             />
           )}
