@@ -48,7 +48,16 @@ export default function Home() {
     }
 
     if (status === 'unauthenticated') {
-        return null;
+        // ミドルウェアによってリダイレクトされるはずだが、念の為のフォールバック
+        router.push('/auth/signin');
+        return (
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                    <ChefHat className="w-12 h-12 text-yellow-500 mx-auto mb-4 animate-pulse"/>
+                    <p className="text-gray-600 dark:text-gray-400">ログインページへリダイレクト中...</p>
+                </div>
+            </div>
+        );
     }
 
     const fetchRecipes = async () => {
