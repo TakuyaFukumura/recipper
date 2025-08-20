@@ -21,6 +21,22 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
   const [ingredientInput, setIngredientInput] = useState('');
   const [dietaryInput, setDietaryInput] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // エラー表示用
+  const [selectedCuisineType, setSelectedCuisineType] = useState(''); // 選択された料理の種類
+  const [customCuisineInput, setCustomCuisineInput] = useState(''); // カスタム入力用
+
+  // 料理の種類の選択肢
+  const cuisineOptions = [
+    { value: '', label: '選択してください' },
+    { value: '和食', label: '和食' },
+    { value: 'イタリアン', label: 'イタリアン' },
+    { value: '中華', label: '中華' },
+    { value: 'フレンチ', label: 'フレンチ' },
+    { value: 'アメリカン', label: 'アメリカン' },
+    { value: 'タイ料理', label: 'タイ料理' },
+    { value: 'インド料理', label: 'インド料理' },
+    { value: 'メキシカン', label: 'メキシカン' },
+    { value: 'その他', label: 'その他（直接入力）' },
+  ];
 
   const handleAddIngredient = () => {
     if (ingredientInput.trim()) {
@@ -40,6 +56,30 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
       }));
       setDietaryInput('');
     }
+  };
+
+  // 料理の種類選択のハンドラー
+  const handleCuisineTypeChange = (value: string) => {
+    setSelectedCuisineType(value);
+    if (value === 'その他') {
+      // その他が選択された場合、カスタム入力を有効にし、formDataをクリア
+      setFormData(prev => ({ ...prev, cuisine: '' }));
+      setCustomCuisineInput('');
+    } else if (value !== '') {
+      // 定義済みの選択肢が選択された場合、formDataに設定
+      setFormData(prev => ({ ...prev, cuisine: value }));
+      setCustomCuisineInput('');
+    } else {
+      // 空の選択の場合、formDataをクリア
+      setFormData(prev => ({ ...prev, cuisine: '' }));
+      setCustomCuisineInput('');
+    }
+  };
+
+  // カスタム料理種類入力のハンドラー
+  const handleCustomCuisineChange = (value: string) => {
+    setCustomCuisineInput(value);
+    setFormData(prev => ({ ...prev, cuisine: value }));
   };
 
   const removeIngredient = (index: number) => {
@@ -149,14 +189,27 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
           <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             料理の種類
           </label>
-          <input
+          <select
             id="cuisine"
-            type="text"
-            value={formData.cuisine || ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, cuisine: e.target.value }))}
-            placeholder="例: 和食, イタリアン, 中華"
-            className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
-          />
+            value={selectedCuisineType}
+            onChange={(e) => handleCuisineTypeChange(e.target.value)}
+            className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700 mb-2"
+          >
+            {cuisineOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {selectedCuisineType === 'その他' && (
+            <input
+              type="text"
+              value={customCuisineInput}
+              onChange={(e) => handleCustomCuisineChange(e.target.value)}
+              placeholder="料理の種類を入力してください"
+              className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
+            />
+          )}
         </div>
 
         {/* 難易度 */}
