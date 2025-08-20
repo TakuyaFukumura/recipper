@@ -195,6 +195,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
           </label>
           <select
             id="cuisine"
+            aria-label="料理の種類を選択"
             value={selectedCuisineType}
             onChange={(e) => handleCuisineTypeChange(e.target.value)}
             className="w-full rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700 mb-2"
