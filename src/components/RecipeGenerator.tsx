@@ -67,15 +67,16 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
   // 料理の種類選択のハンドラー
   const handleCuisineTypeChange = (value: string) => {
     setSelectedCuisineType(value);
-    if (value === OTHER_OPTION) {
-      // その他が選択された場合、カスタム入力を有効にし、formDataをクリア
-      setCuisineEmpty();
-    } else if (value !== '') {
-      // 定義済みの選択肢が選択された場合、formDataに設定
-      setFormData(prev => ({ ...prev, cuisine: value }));
-    } else {
-      // 空の選択の場合、formDataをクリア
-      setCuisineEmpty();
+    switch (value) {
+      case OTHER_OPTION:
+        setCuisineEmpty();
+        break;
+      case '':
+        setCuisineEmpty();
+        break;
+      default:
+        setFormData(prev => ({ ...prev, cuisine: value }));
+        break;
     }
     setCustomCuisineInput('');
   };
