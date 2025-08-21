@@ -60,26 +60,16 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
     }
   };
 
-  const setCuisineEmpty = () => {
-    setFormData(prev => ({ ...prev, cuisine: '' }));
-  };
-
-  // 料理の種類選択のハンドラー
-  const handleCuisineTypeChange = (value: string) => {
-    setSelectedCuisineType(value);
-    switch (value) {
-      case OTHER_OPTION:
-        setCuisineEmpty();
-        break;
-      case '':
-        setCuisineEmpty();
-        break;
-      default:
-        setFormData(prev => ({ ...prev, cuisine: value }));
-        break;
-    }
-    setCustomCuisineInput('');
-  };
+    // 料理の種類選択のハンドラー
+    const handleCuisineTypeChange = (value: string) => {
+        setSelectedCuisineType(value);
+        if (value === OTHER_OPTION || value === '') {
+            setFormData(prev => ({...prev, cuisine: ''}));
+        } else {
+            setFormData(prev => ({...prev, cuisine: value}));
+        }
+        setCustomCuisineInput('');
+    };
 
   // カスタム料理種類入力のハンドラー
   const handleCustomCuisineChange = (value: string) => {
