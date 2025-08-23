@@ -149,6 +149,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                   handleAddIngredient();
                 }
               }}
+              onBlur={handleAddIngredient}
               placeholder="例: 鶏肉, 玉ねぎ"
               className="flex-1 rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
             />
@@ -259,6 +260,7 @@ export default function RecipeGenerator({ onRecipeGenerated }: Readonly<RecipeGe
                   handleAddDietary();
                 }
               }}
+              onBlur={handleAddDietary}
               placeholder="例: ベジタリアン, グルテンフリー"
               className="flex-1 rounded-md border-gray-300 dark:border-gray-600 border p-2 text-black dark:text-white dark:bg-gray-700"
             />
