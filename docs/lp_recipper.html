@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipper - 料理レシピ提案WEBアプリ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        .tech-badge {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .screenshot-container {
+            border: 3px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .screenshot-placeholder {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <i class="bi bi-egg-fried me-2"></i>Recipper
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">機能概要</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tech-stack">技術仕様</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#details">機能詳細</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#github">GitHub</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ヒーローセクション -->
+    <section id="home" class="hero-section text-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold mb-4">Recipper</h1>
+                    <p class="lead fs-3 mb-4">料理レシピ提案WEBアプリ</p>
+                    <p class="fs-5 mb-5">Gemini AIを活用した次世代レシピ生成・管理アプリケーション</p>
+                    <a href="#features" class="btn btn-light btn-lg px-5 py-3">
+                        <i class="bi bi-arrow-down-circle me-2"></i>詳細を見る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 機能概要 -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold mb-3">機能概要</h2>
+                    <p class="lead text-muted">Recipperが提供する主要機能をご紹介します</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="text-center h-100 p-4">
+                        <i class="bi bi-robot feature-icon"></i>
+                        <h4 class="fw-bold mb-3">AIレシピ生成</h4>
+                        <p class="text-muted">Gemini APIを使用して、材料や好みに基づいたオリジナルレシピを自動生成。料理の種類、難易度、調理時間も指定可能です。</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="text-center h-100 p-4">
+                        <i class="bi bi-journal-bookmark feature-icon"></i>
+                        <h4 class="fw-bold mb-3">レシピ管理</h4>
+                        <p class="text-muted">生成・保存したレシピの一覧表示、編集、削除機能。お気に入りのレシピをいつでも簡単に管理できます。</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="text-center h-100 p-4">
+                        <i class="bi bi-shield-check feature-icon"></i>
+                        <h4 class="fw-bold mb-3">認証機能</h4>
+                        <p class="text-muted">NextAuth.jsによる安全なユーザー認証システム。個人のレシピを安全に管理できます。</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="text-center h-100 p-4">
+                        <i class="bi bi-database feature-icon"></i>
+                        <h4 class="fw-bold mb-3">データ管理</h4>
+                        <p class="text-muted">SQLite + Prismaによる堅牢なデータベース設計。レシピデータを安全かつ効率的に保存します。</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="text-center h-100 p-4">
+                        <i class="bi bi-phone feature-icon"></i>
+                        <h4 class="fw-bold mb-3">レスポンシブデザイン</h4>
+                        <p class="text-muted">Tailwind CSSによるモダンなUI設計。PC、タブレット、スマートフォンで最適な体験を提供します。</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="text-center h-100 p-4">
+                        <i class="bi bi-cloud-upload feature-icon"></i>
+                        <h4 class="fw-bold mb-3">簡単デプロイ</h4>
+                        <p class="text-muted">Docker対応とVercelでの簡単デプロイメント。開発環境から本番環境まで一貫した構成を実現します。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技術仕様 -->
+    <section id="tech-stack" class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold mb-3">技術仕様</h2>
+                    <p class="lead text-muted">最新技術を活用したモダンな技術スタック</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">
+                                <i class="bi bi-code-slash me-2 text-primary"></i>使用言語
+                            </h5>
+                            <div class="mb-3">
+                                <span class="tech-badge">TypeScript</span>
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">HTML5</span>
+                                <span class="tech-badge">CSS3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">
+                                <i class="bi bi-gear me-2 text-success"></i>フレームワーク
+                            </h5>
+                            <div class="mb-3">
+                                <span class="tech-badge">Next.js 15</span>
+                                <span class="tech-badge">React 19.1</span>
+                                <span class="tech-badge">App Router</span>
+                                <span class="tech-badge">Tailwind CSS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">
+                                <i class="bi bi-server me-2 text-warning"></i>ミドルウェア・DB
+                            </h5>
+                            <div class="mb-3">
+                                <span class="tech-badge">SQLite</span>
+                                <span class="tech-badge">Prisma ORM</span>
+                                <span class="tech-badge">NextAuth.js</span>
+                                <span class="tech-badge">bcryptjs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">
+                                <i class="bi bi-puzzle me-2 text-info"></i>ライブラリ・API
+                            </h5>
+                            <div class="mb-3">
+                                <span class="tech-badge">Google Gemini API</span>
+                                <span class="tech-badge">Lucide React</span>
+                                <span class="tech-badge">Vercel Analytics</span>
+                                <span class="tech-badge">Speed Insights</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">
+                                <i class="bi bi-tools me-2 text-danger"></i>開発・デプロイツール
+                            </h5>
+                            <div class="mb-3">
+                                <span class="tech-badge">Docker</span>
+                                <span class="tech-badge">Docker Compose</span>
+                                <span class="tech-badge">Vercel</span>
+                                <span class="tech-badge">GitHub Actions</span>
+                                <span class="tech-badge">ESLint</span>
+                                <span class="tech-badge">TypeScript Compiler</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHubリンク -->
+    <section id="github" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2 class="display-5 fw-bold mb-4">GitHub Repository</h2>
+                    <p class="lead text-muted mb-4">ソースコードは以下のGitHubリポジトリで公開されています</p>
+                    <a href="https://github.com/TakuyaFukumura/recipper" 
+                       class="btn btn-dark btn-lg px-5 py-3" 
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                        <i class="bi bi-github me-2"></i>GitHub でソースコードを見る
+                    </a>
+                    <div class="mt-4">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            オープンソースプロジェクトとして公開中
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 機能詳細（スクリーンショット付き） -->
+    <section id="details" class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold mb-3">機能詳細</h2>
+                    <p class="lead text-muted">各画面の詳細機能をスクリーンショットとともにご紹介</p>
+                </div>
+            </div>
+
+            <!-- レシピ生成画面 -->
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="screenshot-container">
+                        <div class="screenshot-placeholder">
+                            <div class="text-center">
+                                <i class="bi bi-robot" style="font-size: 3rem; color: #667eea;"></i>
+                                <div class="mt-2">レシピ生成画面のスクリーンショット</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-3">
+                        <i class="bi bi-magic me-2 text-primary"></i>AIレシピ生成
+                    </h3>
+                    <p class="text-muted mb-4">
+                        Google Gemini APIを活用したインテリジェントなレシピ生成機能。材料を入力するだけで、
+                        AIが最適なレシピを提案します。
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            材料入力による自動レシピ生成
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            料理の種類・難易度・調理時間の指定
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            食事制限やこだわりの詳細設定
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            生成結果の即座保存機能
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- レシピ一覧画面 -->
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                    <div class="screenshot-container">
+                        <div class="screenshot-placeholder">
+                            <div class="text-center">
+                                <i class="bi bi-grid-3x3-gap" style="font-size: 3rem; color: #667eea;"></i>
+                                <div class="mt-2">レシピ一覧画面のスクリーンショット</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <h3 class="fw-bold mb-3">
+                        <i class="bi bi-collection me-2 text-warning"></i>レシピ管理
+                    </h3>
+                    <p class="text-muted mb-4">
+                        保存したレシピを効率的に管理できる一覧画面。カード形式で見やすく表示し、
+                        各レシピの詳細確認や編集が簡単に行えます。
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            カード形式での見やすいレシピ表示
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            レシピの詳細情報プレビュー
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            ワンクリックでの編集・削除操作
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            レスポンシブ対応のグリッドレイアウト
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- レシピ詳細画面 -->
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="screenshot-container">
+                        <div class="screenshot-placeholder">
+                            <div class="text-center">
+                                <i class="bi bi-journal-text" style="font-size: 3rem; color: #667eea;"></i>
+                                <div class="mt-2">レシピ詳細画面のスクリーンショット</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-3">
+                        <i class="bi bi-file-text me-2 text-info"></i>レシピ詳細表示
+                    </h3>
+                    <p class="text-muted mb-4">
+                        選択したレシピの詳細情報を見やすく表示。材料リスト、手順、調理時間など、
+                        料理に必要な全ての情報を整理して提供します。
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            材料リストの明確な表示
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            ステップ別の調理手順
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            調理時間・難易度の表示
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            印刷対応の見やすいレイアウト
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ログイン画面 -->
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                    <div class="screenshot-container">
+                        <div class="screenshot-placeholder">
+                            <div class="text-center">
+                                <i class="bi bi-shield-lock" style="font-size: 3rem; color: #667eea;"></i>
+                                <div class="mt-2">認証画面のスクリーンショット</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <h3 class="fw-bold mb-3">
+                        <i class="bi bi-person-check me-2 text-success"></i>認証システム
+                    </h3>
+                    <p class="text-muted mb-4">
+                        NextAuth.jsによる安全な認証システム。ユーザーの個人データとレシピを
+                        安全に保護し、セキュアなアクセス管理を実現しています。
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            NextAuth.js による安全な認証
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            bcryptjs によるパスワード暗号化
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            JWT セッション管理
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            自動リダイレクト機能
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">
+                        <i class="bi bi-egg-fried me-2"></i>Recipper
+                    </h5>
+                    <small class="text-muted">料理レシピ提案WEBアプリ</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="https://github.com/TakuyaFukumura/recipper" 
+                       class="text-white text-decoration-none" 
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                        <i class="bi bi-github me-1"></i>GitHub Repository
+                    </a>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center text-muted">
+                <small>&copy; 2024 Recipper. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ナビゲーションバーのアクティブ状態管理
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
